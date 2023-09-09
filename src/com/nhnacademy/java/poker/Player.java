@@ -1,39 +1,74 @@
 package com.nhnacademy.java.poker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class Player {
+    private List<String> handCard;
+    private String name;
+    private PokerHandRank handRank;
 
-    private static String cardShape;
-    private static int cardNum;
-    private static String[] handCard;
-
-    public static void resethandCard() {
-        handCard = new String[1];
-        handCard[0] = String.valueOf(1);
+    public Player(String name) {
+        this.name = name;
+        handCard = new ArrayList<>();
     }
 
-    public static void receiveCard() {
-        handCard = Card.distributionCard();
-        printCard();
+    public String getName() {
+        return name;
     }
 
-    public Player() {
+    public List<String> getHandCard() {
+        return handCard;
     }
 
-    public Player(ArrayList<String> cards) {
-
-        handCard[0] = String.valueOf(cards);
+    public PokerHandRank getHandRank() {
+        return handRank;
     }
 
-    public static void printCard() {
-        System.out.println(Arrays.toString(handCard));
+    public void receiveCard(String card) {
+        handCard.add(card);
+    }
+
+    public void printCard() {
+        for (String card : handCard) {
+            System.out.println(card);
+        }
+    }
+
+    public void checkRank() {
+
+        // One Pair, Two Pair, High Card Check
+        int[] cardCounts = new int[15];
+        for (String card : handCard) {
+            int cardValue = getCardValue(card);
+            cardCounts[cardValue]++;
+        }
+
+        boolean hasPair = false;
+        boolean hasTwoPair = false;
+
+        for (int i = 2; i <= 14; i++) {
+            if (cardCounts[i] == 2) {
+                if (hasPair) {
+                    hasTwoPair = true;
+                } else {
+                    hasPair = true;
+                }
+            }
+        }
+
+        if (hasTwoPair) {
+            handRank = PokerHandRank.TWO_PAIR;
+        } else if (hasPair) {
+            handRank = PokerHandRank.ONE_PAIR;
+        } else {
+            handRank = PokerHandRank.HIGH_CARD;
+        }
+        System.out.println(handRank);
     }
 
 
-    void Player(String cardShape, int cardNum) {
-        this.cardShape = cardShape;
-        this.cardNum = cardNum;
+    private int getCardValue(String card) {
+        return Integer.parseInt(card.split(" ")[1]);
     }
 }
