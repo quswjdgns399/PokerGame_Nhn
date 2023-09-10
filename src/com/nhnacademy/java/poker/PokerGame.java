@@ -48,7 +48,7 @@ public class PokerGame {
             System.out.println();
         }
 
-        Player winner = determineWinner();
+        Player winner = checkWinner();
 
         if (winner != null) {
             System.out.println("<WINNER : " + winner.getName() + ">");
@@ -57,17 +57,61 @@ public class PokerGame {
         }
     }
 
-    private Player determineWinner() {
+    private Player checkWinner() {
         Player winner = null;
+        int highestRankValue = -1; // 가장 높은 랭크의 값을 저장할 변수 초기화
 
+        for (Player player : players) {
+            player.checkRank();
+            PokerHandRank playerRank = player.getHandRank();
+
+            //Rank에 중복이 없을 때
+            if (playerRank.getRank() > highestRankValue) {
+                highestRankValue = playerRank.getRank();
+                winner = player;
+
+                // High_Card player가 2명 이상인 경우
+            } else if (playerRank == PokerHandRank.HIGH_CARD
+                    && highestRankValue == PokerHandRank.HIGH_CARD.getRank()) {
+
+                int playerHighestCardValue0 = player.getHighestCardValue();
+                int winnerHighestCardValue0 = winner.getHighestCardValue();
+
+                if (playerHighestCardValue0 > winnerHighestCardValue0) {
+                    winner = player;
+                }
+                // One_Pair player가 2명 이상인 경우
+            } else if (playerRank.getRank() >= PokerHandRank.ONE_PAIR.getRank() &&
+                    highestRankValue >= PokerHandRank.ONE_PAIR.getRank()) {
+
+                int playerHighestCardValue1 = player.getHighestCardValue();
+                int winnerHighestCardValue1 = winner.getHighestCardValue();
+
+                if (playerHighestCardValue1 > winnerHighestCardValue1) {
+                    winner = player;
+                }
+                // Two_Pair player가 2명 이상인 경우
+            } else if (playerRank.getRank() >= PokerHandRank.TWO_PAIR.getRank() &&
+                    highestRankValue >= PokerHandRank.TWO_PAIR.getRank()) {
+
+                int playerHighestCardValue2 = player.getHighestCardValue();
+                int winnerHighestCardValue2 = winner.getHighestCardValue();
+
+                if (playerHighestCardValue2 > winnerHighestCardValue2) {
+                    winner = player;
+                }
+            }
+
+        }
         return winner;
     }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("==========================");
         System.out.println("<WELCOME TO POKER GAME>");
-        System.out.printf("Enter the number of players: ");
+        System.out.printf("Enter the number of players : ");
 
         int numberOfPlayers = sc.nextInt();
         sc.nextLine();

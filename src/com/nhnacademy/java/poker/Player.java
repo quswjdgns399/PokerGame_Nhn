@@ -35,6 +35,20 @@ public class Player {
         }
     }
 
+
+    // handcard에서 가장 높은 숫자 반환
+    public int getHighestCardValue() {
+        int highestValue = -1;
+        for (String card : handCard) {
+            int cardValue = getCardValue(card);
+            if (cardValue > highestValue) {
+                highestValue = cardValue;
+            }
+        }
+        return highestValue;
+    }
+
+
     public void checkRank() {
 
         // One Pair, Two Pair, High Card Check
