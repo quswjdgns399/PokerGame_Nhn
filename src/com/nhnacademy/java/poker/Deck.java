@@ -8,10 +8,10 @@ public class Deck {
 
     public Deck() {
         deck = new ArrayList<>(52);
-        resetCard();
+        resetDeck();
     }
 
-    public void resetCard() {
+    public void resetDeck() {
         deck.clear();
         for (CardShape cardShape : CardShape.values()) {
             for (CardNumber cardNumber : CardNumber.values()) {
@@ -21,11 +21,12 @@ public class Deck {
         }
     }
 
+
     public void shuffle() {
         Collections.shuffle(deck);
     }
 
-    public String dealCard() {
+    public String dealDeck() {
         if (deck.isEmpty()) {
             System.out.println("No cards left in the deck.");
             return null;

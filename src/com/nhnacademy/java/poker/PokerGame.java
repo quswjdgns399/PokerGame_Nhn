@@ -26,12 +26,12 @@ public class PokerGame {
     }
 
     public void startGame() {
-        cardDeck.resetCard();
+        cardDeck.resetDeck();
         cardDeck.shuffle();
 
         for (Player player : players) {
             for (int i = 0; i < 5; i++) {
-                String card = cardDeck.dealCard();
+                String card = cardDeck.dealDeck();
                 if (card != null) {
                     player.receiveCard(card);
                 }
